@@ -1,0 +1,30 @@
+{
+  "name": "storybook-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "@material-ui/core": "^3.1.1",
+    "@material-ui/icons": "^3.0.1",
+    "ag-grid-community": "^19.0.0",
+    "ag-grid-react": "^19.0.0",
+    "classnames": "^2.2.6",
+    "prop-types": "^15.6.2",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2"
+  },
+  "devDependencies": {
+    "@storybook/addon-info": "^3.4.11",
+    "@storybook/addon-knobs": "^3.4.11",
+    "@storybook/react": "^3.4.11",
+    "@types/react": "^16.4.14",
+    "babel-core": "^6.26.3",
+    "storybook-addon-material-ui": "^0.9.0-alpha.16"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "storybook": "start-storybook -p 9001 -c .storybook"
+  },
+  "author": "",
+  "license": "ISC"
+}
