@@ -19,7 +19,12 @@ const drawerWidth = 240;
 
 const styles = theme => ({
   root: {
-    display: 'flex',
+    display: 'grid',
+    minHeight: '100vh',
+    gridTemplateAreas: `'sidebar header'
+                        'sidebar content'`,
+    gridTemplateColumns: 'auto 1fr',
+    gridTemplateRows: 'auto 1fr',
   },
   toolbar: {
     paddingRight: 24, // keep right padding when drawer closed
@@ -29,18 +34,30 @@ const styles = theme => ({
     alignItems: 'center',
     justifyContent: 'flex-end',
     padding: '0 8px',
+    height: 0,
+    transition: theme.transitions.create('all', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
     ...theme.mixins.toolbar,
+    backgroundColor: '#ffa500',
+  },
+  toolbarIconCollapsed: {
+    visibility: 'collapse',
+    minHeight: 0,
+    height: 0,
+    opacity: 0,
   },
   appBar: {
+    backgroundColor: '#1e2b22',
     zIndex: theme.zIndex.drawer + 1,
+    gridArea: 'header',
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
   },
   appBarShift: {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
@@ -57,13 +74,22 @@ const styles = theme => ({
     flexGrow: 1,
   },
   drawerPaper: {
+    gridArea: 'sidebar',
     position: 'relative',
     whiteSpace: 'nowrap',
     width: drawerWidth,
+    backgroundColor: '#ccc',
+    boxShadow: '-1px 0px 10px 0px #0303037d',
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
+  },
+  paperAnchorDockedLeft: {
+    border: 'none',
+  },
+  drawer: {
+    gridArea: 'sidebar',
   },
   drawerPaperClose: {
     overflowX: 'hidden',
@@ -76,18 +102,11 @@ const styles = theme => ({
       width: theme.spacing.unit * 9,
     },
   },
-  appBarSpacer: theme.mixins.toolbar,
   content: {
     flexGrow: 1,
-    padding: theme.spacing.unit * 3,
-    height: '100vh',
+    padding: theme.spacing.unit * 2,
     overflow: 'auto',
-  },
-  chartContainer: {
-    marginLeft: -22,
-  },
-  tableContainer: {
-    height: 320,
+    gridArea: 'content',
   },
 });
 
@@ -110,13 +129,12 @@ export default (WrappedComponent) => {
     };
 
     render() {
-      const { classes } = this.props;
+      const { classes, ...rest } = this.props;
 
       return (
         <div className={classes.root}>
-          <AppBar
-            position="absolute"
-            className={classNames(classes.appBar, this.state.open && classes.appBarShift)}
+          <AppBar position="static"
+                  className={classNames(classes.appBar, this.state.open && classes.appBarShift)}
           >
             <Toolbar disableGutters={!this.state.open}
                      className={classes.toolbar}>
@@ -133,7 +151,7 @@ export default (WrappedComponent) => {
               </IconButton>
               <Typography
                 component="h1"
-                variant="title"
+                variant="h5"
                 color="inherit"
                 noWrap
                 className={classes.title}
@@ -150,12 +168,14 @@ export default (WrappedComponent) => {
           </AppBar>
           <Drawer
             variant="permanent"
+            className={classes.drawer}
             classes={{
+              paperAnchorDockedLeft: classes.paperAnchorDockedLeft,
               paper: classNames(classes.drawerPaper, !this.state.open && classes.drawerPaperClose),
             }}
             open={this.state.open}
           >
-            <div className={classes.toolbarIcon}>
+            <div className={classNames(classes.toolbarIcon, !this.state.open && classes.toolbarIconCollapsed)}>
               <IconButton onClick={this.handleDrawerClose}>
                 <ChevronLeftIcon/>
               </IconButton>
@@ -166,8 +186,7 @@ export default (WrappedComponent) => {
             <List>{secondaryListItems}</List>
           </Drawer>
           <main className={classes.content}>
-            <div className={classes.appBarSpacer}/>
-            <WrappedComponent {...this.props} />
+            <WrappedComponent {...rest} />
           </main>
         </div>
       );

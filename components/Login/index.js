@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -53,7 +53,7 @@ function SignIn(props) {
         <Avatar className={classes.avatar}>
           <LockIcon/>
         </Avatar>
-        <Typography variant="headline">Sign in</Typography>
+        <Typography variant="h5">Sign in</Typography>
         <form className={classes.form}>
           <FormControl margin="normal"
                        required
